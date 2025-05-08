@@ -41,7 +41,7 @@ jobs:
 
       # 6. 保存 HTML 报告为构建产物
       - name: Upload HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: html-report
           path: notebooks/mean_reversion_analysis.html
