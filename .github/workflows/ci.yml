@@ -1,5 +1,6 @@
-name: CI
+name: CI & Publish Report
 
+# 允许写权限，才能提交 docs/index.html
 permissions:
   contents: write
 
@@ -10,21 +11,24 @@ on:
     branches: [ main ]
 
 jobs:
-  build_and_report:
+  build_and_publish:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. 检出代码
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: true
 
+      # 2. 安装 Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.11
 
+      # 3. 安装依赖
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -32,21 +36,31 @@ jobs:
           pip install nbconvert[webpdf] playwright
           playwright install
 
+      # 4. 下载历史数据
       - name: Download data
         run: python src/download_data.py
 
+      # 5. 运行回测脚本
       - name: Run backtest
         run: python src/mean_reversion_backtest.py
 
+      # 6. 执行 Notebook 并导出 HTML
       - name: Execute notebook and export HTML
         run: jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
 
-      - name: Commit HTML report back to repo
+      # 7. 拷贝报告到 docs 目录
+      - name: Copy report to docs
+        run: |
+          mkdir -p docs
+          cp notebooks/mean_reversion_analysis.html docs/index.html
+
+      # 8. 提交并推送 docs/index.html 回主分支
+      - name: Commit and push report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add notebooks/mean_reversion_analysis.html
-          git commit -m "ci: update HTML report [skip ci]" || echo "No changes to commit"
+          git add docs/index.html
+          git commit -m "ci: publish report to GitHub Pages [skip ci]" || echo "No changes to commit"
           git push origin main
