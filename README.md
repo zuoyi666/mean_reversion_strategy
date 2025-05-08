@@ -73,12 +73,11 @@ open notebooks/mean_reversion_analysis.html
 
 ## Performance Metrics
 
-| Metric       | EZU         | VGK         |
-| ------------ | ----------- | ----------- |
-| Sharpe Ratio | \<computed> | \<computed> |
-| Max Drawdown | \<computed> | \<computed> |
+| Metric       | EZU  | VGK      |
+| ------------ |------|----------|
+| Sharpe Ratio | -0.2 | -32.31%  |
+| Max Drawdown | -0.3 | -35.44%  |
 
-*Replace `<computed>` with actual values from your notebook output.*
 
 ---
 
