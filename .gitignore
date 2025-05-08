@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Conda / virtualenv
+env/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Jupyter
+*.nbconvert.ipynb
+
+# 数据和输出
+data/
+output/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
