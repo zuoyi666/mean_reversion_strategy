@@ -30,7 +30,7 @@ jobs:
       - name: Run backtest
         run: python src/mean_reversion_backtest.py
 
-           - name: Execute notebook and export HTML
+      - name: Execute notebook and export HTML
         run: jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
 
       - name: Upload HTML report
