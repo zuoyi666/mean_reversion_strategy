@@ -30,7 +30,13 @@ jobs:
       - name: Run backtest
         run: python src/mean_reversion_backtest.py
 
-      - name: Execute notebook and export HTML
+           - name: Execute notebook and export HTML
         run: jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
 
-      # Upload step omitted / commented out for now…
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-report
+          path: notebooks/mean_reversion_analysis.html
+
+
