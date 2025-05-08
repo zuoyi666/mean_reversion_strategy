@@ -34,7 +34,7 @@ jobs:
         run: jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
 
       - name: Upload HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v1
         with:
           name: html-report
           path: notebooks/mean_reversion_analysis.html
