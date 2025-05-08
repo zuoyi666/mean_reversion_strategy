@@ -11,11 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.11
 
@@ -23,23 +21,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install nbconvert[webpdf]
-          pip install playwright
+          pip install nbconvert[webpdf] playwright
           playwright install
+
+      - name: Download data
+        run: python src/download_data.py
 
       - name: Run backtest
         run: python src/mean_reversion_backtest.py
 
       - name: Execute notebook and export HTML
-        run: |
-          jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
+        run: jupyter nbconvert --execute --to html notebooks/mean_reversion_analysis.ipynb
 
-      # ↓ 下面这一节先注释掉，避免拉不到 action 导致整个 CI 失败
-      # - name: Upload HTML report
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: html-report
-      #     path: notebooks/mean_reversion_analysis.html
-
-      - name: Done
-        run: echo "Report generated at notebooks/mean_reversion_analysis.html"
+      # Upload step omitted / commented out for now…
